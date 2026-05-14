@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>온라인 마케팅 콘텐츠 캘린더 — 세무회계 초록</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #0b1d13;
+  --surface:  #112a1c;
+  --surface2: #1a3d2b;
+  --border:   #2b5e3e;
+  --gold:     #c9a227;
+  --gold-dim: rgba(201,162,39,0.13);
+  --text:     #eee8d8;
+  --muted:    #8ab09a;
+  --white:    #ffffff;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+}
+.page { max-width: 860px; margin: 0 auto; padding: 48px 32px 80px; }
+
+.doc-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 28px;
+  margin-bottom: 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.brand-name {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 12px;
+  color: var(--gold);
+  letter-spacing: 0.14em;
+  margin-bottom: 10px;
+}
+.doc-title {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.3;
+}
+.doc-meta { text-align: right; font-size: 13px; color: var(--muted); line-height: 2; }
+.doc-meta strong { color: var(--text); }
+
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+.section-title {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 18px;
+}
+
+.gc-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 14px;
+  margin-bottom: 30px;
+}
+.gc-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 18px;
+  position: relative;
+  overflow: hidden;
+}
+.gc-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--gold);
+}
+.gc-label { font-size: 10px; letter-spacing: .16em; color: var(--gold); font-weight: 700; margin-bottom: 8px; }
+.gc-headline { font-family: 'Noto Serif KR', serif; font-size: 14px; font-weight: 600; color: var(--white); margin-bottom: 10px; line-height: 1.6; }
+.gc-body { font-size: 13px; color: var(--muted); line-height: 1.75; }
+
+.team-bar {
+  background: var(--gold-dim);
+  border: 1px solid rgba(201,162,39,0.28);
+  border-radius: 10px;
+  padding: 16px 22px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 44px;
+}
+.team-item { display: flex; flex-direction: column; flex: 1; }
+.team-item-label { font-size: 10px; letter-spacing: .1em; color: var(--gold); margin-bottom: 3px; }
+.team-item-name  { font-weight: 700; color: var(--white); font-size: 14px; }
+.team-item-desc  { font-size: 12px; color: var(--muted); }
+.team-divider    { width: 1px; height: 38px; background: rgba(201,162,39,0.28); }
+
+.month-tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+.m-tab {
+  padding: 8px 24px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 14px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all .18s;
+}
+.m-tab.active { background: var(--surface2); color: var(--gold); border-color: var(--gold); }
+
+.channel-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+.ch-tab {
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 15px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  transition: all .18s;
+}
+.ch-icon {
+  width: 26px; height: 26px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; flex-shrink: 0;
+  background: var(--surface2); color: var(--muted);
+}
+.active-blog  { background: #0e2235; color: #7bc0f5; border-color: #2a6fa8; }
+.active-blog  .ch-icon { background: #163d6e; color: #7bc0f5; }
+.active-insta { background: #231500; color: #f0b050; border-color: #7a5010; }
+.active-insta .ch-icon { background: #3d2a10; color: #f0b050; }
+
+.month-note {
+  background: rgba(201,162,39,0.07);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 6px 6px 0;
+  padding: 11px 16px;
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 20px;
+  line-height: 1.65;
+}
+.month-note strong { color: var(--text); }
+
+.week-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.week-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 18px;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+}
+.week-num {
+  font-size: 12px; font-weight: 700; color: var(--gold);
+  background: rgba(201,162,39,0.15);
+  padding: 3px 12px; border-radius: 20px;
+  white-space: nowrap;
+}
+.week-dates { font-size: 13px; color: var(--muted); white-space: nowrap; }
+.week-theme { font-size: 14px; font-weight: 700; color: var(--text); }
+
+.posts { padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+.post {
+  display: flex; align-items: flex-start; gap: 13px;
+  padding: 13px 16px;
+  background: rgba(255,255,255,0.035);
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.055);
+}
+.post-bullet {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gold); margin-top: 9px; flex-shrink: 0;
+}
+.post-body { flex: 1; }
+.post-title { font-size: 15px; color: var(--text); line-height: 1.65; margin-bottom: 7px; }
+.tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.tag {
+  font-size: 11px; font-weight: 700;
+  padding: 2px 9px; border-radius: 12px; letter-spacing: .04em;
+}
+.tag-seo    { background: #1e4d35; color: #6fcf97; }
+.tag-local  { background: #3b2e10; color: #f2c94c; }
+.tag-tip    { background: #1a3d4f; color: #56ccf2; }
+.tag-brand  { background: #3d2050; color: #bb86fc; }
+.tag-season { background: #4f2a10; color: #f2994a; }
+.tag-trust  { background: #4a1a1a; color: #eb5757; }
+
+.next-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 26px 28px;
+  margin-top: 44px;
+}
+.next-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 16px; }
+.next-item {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 8px; padding: 16px 14px;
+}
+.next-phase { font-size: 10px; font-weight: 700; letter-spacing: .15em; color: var(--gold); margin-bottom: 6px; }
+.next-title { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 7px; }
+.next-desc  { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+.footer {
+  margin-top: 52px; padding-top: 18px;
+  border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 12px; color: var(--muted);
+}
+.footer-brand { font-family: 'Noto Serif KR', serif; font-size: 13px; color: var(--gold); font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="doc-header">
+    <div>
+      <div class="brand-name">세무회계 초록 &nbsp;&middot;&nbsp; ONLINE MARKETING STRATEGY</div>
+      <div class="doc-title">콘텐츠 마케팅<br>기획 보고서</div>
+    </div>
+    <div class="doc-meta">
+      <div>작성일 &nbsp;<strong>2026년 5월</strong></div>
+      <div>수신 &nbsp;<strong>유수용 세무사</strong></div>
+      <div>작성 &nbsp;<strong>마케팅팀</strong></div>
+    </div>
+  </header>
+
+  <div class="section-label">GOLDEN CIRCLE &mdash; 기획 방향</div>
+  <div class="section-title">우리가 이 마케팅을 하는 이유</div>
+  <div class="gc-grid">
+    <div class="gc-card">
+      <div class="gc-label">WHY &mdash; 존재 이유</div>
+      <div class="gc-headline">"세금이 두려운 사람들이<br>처음으로 편하게 믿고 맡길 수 있는 세무사"</div>
+      <div class="gc-body">천안·아산 소상공인은 세무사를 멀게 느낀다. 우리는 그 벽을 콘텐츠로 먼저 허문다.</div>
+    </div>
+    <div class="gc-card">
+      <div class="gc-label">HOW &mdash; 실현 방식</div>
+      <div class="gc-headline">팔기 전에 먼저 가르친다<br>AI &times; 디자인으로 가장 쉽게 만든다</div>
+      <div class="gc-body">전문 지식을 시각 콘텐츠로 변환. 지역 키워드로 검색 선점. 팀 차별성을 브랜드화.</div>
+    </div>
+    <div class="gc-card">
+      <div class="gc-label">WHAT &mdash; 구체 행동</div>
+      <div class="gc-headline">블로그 SEO + 인스타 카드뉴스<br>주 2~3회 발행 루틴 구축</div>
+      <div class="gc-body">6~7월: WHY 정착 및 부가세 시즌 공략. 신규 고객 유입 + 브랜드 인지도 동시 달성.</div>
+    </div>
+  </div>
+
+  <div class="team-bar">
+    <div class="team-item">
+      <div class="team-item-label">현직 세무사</div>
+      <div class="team-item-name">유수용 세무사</div>
+      <div class="team-item-desc">세무 전문 지식 공급</div>
+    </div>
+    <div class="team-divider"></div>
+    <div class="team-item">
+      <div class="team-item-label">공학박사 겸 세무사</div>
+      <div class="team-item-name">이동희 박사</div>
+      <div class="team-item-desc">AI 리터러시 &middot; 콘텐츠 전략</div>
+    </div>
+    <div class="team-divider"></div>
+    <div class="team-item">
+      <div class="team-item-label">마케터</div>
+      <div class="team-item-name">마케팅 담당</div>
+      <div class="team-item-desc">웹디자인 &middot; AI 이미지 보정</div>
+    </div>
+    <div class="team-divider"></div>
+    <div class="team-item" style="flex:2;">
+      <div class="team-item-label">핵심 경쟁력</div>
+      <div class="team-item-desc" style="color:var(--text);font-size:13px;line-height:1.7;">
+        세금을 아는 사람이 AI와 디자인으로 직접 콘텐츠를 만든다<br>
+        &rarr; 일반 마케팅 대행사가 절대 복제할 수 없는 차별점
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-bottom:16px;">CONTENT CALENDAR &mdash; 콘텐츠 캘린더</div>
+
+  <div class="month-tabs">
+    <button class="m-tab active" id="tab-jun" onclick="switchMonth('jun')">6월 &mdash; WHY 정착</button>
+    <button class="m-tab"        id="tab-jul" onclick="switchMonth('jul')">7월 &mdash; 부가세 시즌</button>
+  </div>
+
+  <div class="channel-tabs">
+    <button class="ch-tab active-blog" id="ch-blog"  onclick="switchChannel('blog')">
+      <span class="ch-icon">N</span> 네이버 블로그
+    </button>
+    <button class="ch-tab"             id="ch-insta" onclick="switchChannel('insta')">
+      <span class="ch-icon">In</span> 인스타그램
+    </button>
+  </div>
+
+  <div class="month-note" id="month-note"></div>
+  <div id="calendar-body"></div>
+
+  <div class="next-section">
+    <div class="section-label">NEXT STEP &mdash; 방향 조율 후 진행</div>
+    <div class="section-title">세무사님께 확인이 필요한 사항</div>
+    <div class="next-grid">
+      <div class="next-item">
+        <div class="next-phase">CHECK 01</div>
+        <div class="next-title">주력 업종 설정</div>
+        <div class="next-desc">업종별 콘텐츠 시리즈 순서 결정을 위해 우선 공략할 업종(음식업·학원·소매업 등) 지정 필요</div>
+      </div>
+      <div class="next-item">
+        <div class="next-phase">CHECK 02</div>
+        <div class="next-title">블로그 제목 톤 확인</div>
+        <div class="next-desc">제안 제목들이 세무사님 스타일과 맞는지 검토. 전문성 강조 vs 친근한 톤 방향 조율</div>
+      </div>
+      <div class="next-item">
+        <div class="next-phase">CHECK 03</div>
+        <div class="next-title">인스타 노출 범위</div>
+        <div class="next-desc">비용 공개 콘텐츠(기장 비용 현실 공개 등) 발행 여부 사전 협의 필요</div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-brand">세무회계 초록</div>
+    <div>본 문서는 내부 공유용입니다 &nbsp;&middot;&nbsp; 마케팅팀 작성 &nbsp;&middot;&nbsp; 2026년 5월</div>
+  </footer>
+
+</div>
+
+<script>
+var tagMap = {
+  seo:    { cls: "tag-seo",    label: "SEO"   },
+  local:  { cls: "tag-local",  label: "지역"   },
+  tip:    { cls: "tag-tip",    label: "절세팁" },
+  brand:  { cls: "tag-brand",  label: "브랜드" },
+  season: { cls: "tag-season", label: "시즌"   },
+  trust:  { cls: "tag-trust",  label: "신뢰"   }
+};
+
+var cal = {
+  jun: {
+    blog: {
+      note: "<strong>6월 전략:</strong> 검색 유입 기반 구축 — 천안·아산 키워드 + 세금 기초 콘텐츠로 블로그 색인 확대, 주 2회 발행",
+      weeks: [
+        { week: "1주차", dates: "6/2 – 6/8",   theme: "브랜드 런칭", posts: [
+          { title: "천안·아산 세무사 선택 기준 5가지 — 개업 세무사의 솔직한 이야기", tags: ["seo","local"] },
+          { title: "AI와 세무사가 만나면? 우리 팀을 소개합니다",                   tags: ["brand"] }
+        ]},
+        { week: "2주차", dates: "6/9 – 6/15",  theme: "세금 기초 상식", posts: [
+          { title: "개인사업자 2026 세금 달력 — 놓치면 가산세 나오는 일정 정리",    tags: ["seo","tip"] },
+          { title: "부가가치세란? 소상공인이 꼭 알아야 할 기초 개념",              tags: ["seo"] }
+        ]},
+        { week: "3주차", dates: "6/16 – 6/22", theme: "지역 밀착", posts: [
+          { title: "천안·아산 소상공인 절세 노하우 — 지역 세무사가 알려주는 핵심",  tags: ["local","tip"] },
+          { title: "아산 신설 사업자 첫 해 세금 준비 완전 체크리스트",             tags: ["local","seo"] }
+        ]},
+        { week: "4주차", dates: "6/23 – 6/29", theme: "절세 전략", posts: [
+          { title: "2026 소상공인 절세 가이드 — 이것만 챙겨도 수십만 원 차이",      tags: ["tip","seo"] },
+          { title: "연 매출 1억 미만 사업자를 위한 매출 규모별 세금 전략",          tags: ["tip"] }
+        ]}
+      ]
+    },
+    insta: {
+      note: "<strong>6월 전략:</strong> 첫인상 형성 — AI 이미지 활용 카드뉴스로 팔로워 유입 시작, 세무사 계정 톤앤매너 확립, 주 2~3회",
+      weeks: [
+        { week: "1주차", dates: "6/2 – 6/8",   theme: "브랜드 런칭", posts: [
+          { title: "팀 소개 카드뉴스 (3장) — 세무사 x AI전문가 x 마케터 조합 공개", tags: ["brand"] },
+          { title: "세무사 고르는 법 인포그래픽 — 5가지 체크포인트",               tags: ["tip"] },
+          { title: "릴스: 우리 사무실 하루 루틴 (친근감 형성)",                   tags: ["brand"] }
+        ]},
+        { week: "2주차", dates: "6/9 – 6/15",  theme: "세금 기초", posts: [
+          { title: "카드뉴스: 이것만 알면 세금 걱정 끝 — 필수 용어 5개",           tags: ["tip"] },
+          { title: "부가세 신고 D-46 카운트다운 그래픽",                          tags: ["season"] },
+          { title: "세금 퀴즈 인터랙션 (스토리 활용 — 참여 유도)",                 tags: ["brand"] }
+        ]},
+        { week: "3주차", dates: "6/16 – 6/22", theme: "지역 밀착", posts: [
+          { title: "천안·아산 창업자를 위한 세금 팁 — 지역 특화 카드뉴스",         tags: ["local"] },
+          { title: "주요 업종별 세금 주의사항 (음식업·소매업·프리랜서)",            tags: ["tip"] }
+        ]},
+        { week: "4주차", dates: "6/23 – 6/29", theme: "절세 노하우", posts: [
+          { title: "절세 체크리스트 카드뉴스 — 사업자 필수 저장 콘텐츠",           tags: ["tip"] },
+          { title: "AI로 세금 자료 정리하는 방법 — 팀 차별화 콘텐츠 1탄",          tags: ["brand"] }
+        ]}
+      ]
+    }
+  },
+  jul: {
+    blog: {
+      note: "<strong>7월 전략:</strong> 부가세 시즌 집중 공략 — 마감(7/25) 전후 검색 폭증 타이밍에 신고 관련 키워드 선점",
+      weeks: [
+        { week: "5주차", dates: "7/1 – 7/6",   theme: "부가세 신고 준비", posts: [
+          { title: "2026년 1기 부가세 확정신고 완벽 가이드 — 7월 25일 마감 전 필독", tags: ["season","seo"] },
+          { title: "부가세 신고 자주 틀리는 실수 TOP 5 — 가산세 피하는 법",         tags: ["tip","seo"] }
+        ]},
+        { week: "6주차", dates: "7/7 – 7/13",  theme: "업종별 특화", posts: [
+          { title: "음식업 사장님을 위한 부가세 신고 완전 가이드",                   tags: ["tip","local"] },
+          { title: "프리랜서·1인 사업자가 놓치는 세금 신고 포인트",                 tags: ["tip","seo"] }
+        ]},
+        { week: "7주차", dates: "7/14 – 7/20", theme: "신뢰 구축", posts: [
+          { title: "직접 신고 vs 세무사 위임 — 비용과 리스크 솔직 비교",             tags: ["trust","seo"] },
+          { title: "천안·아산 세무 기장 비용 현실 공개 — 얼마면 될까?",             tags: ["local","trust"] }
+        ]},
+        { week: "8주차", dates: "7/21 – 7/27", theme: "마감 + 하반기 준비", posts: [
+          { title: "부가세 신고 완료 후 체크리스트 — 다음에 반드시 해야 할 일",       tags: ["tip"] },
+          { title: "8월부터 준비하는 하반기 절세 전략 — 선제적 세금 관리법",         tags: ["tip","seo"] }
+        ]}
+      ]
+    },
+    insta: {
+      note: "<strong>7월 전략:</strong> 부가세 시즌 긴박감 활용 — 마감 카운트다운 + 팀 전문성 노출로 DM 문의 전환 집중 유도",
+      weeks: [
+        { week: "5주차", dates: "7/1 – 7/6",   theme: "부가세 시즌 개막", posts: [
+          { title: "부가세 신고 준비 체크리스트 카드뉴스 — 필수 저장",               tags: ["season","tip"] },
+          { title: "신고 마감 D-24 긴박감 그래픽 + 상담 CTA",                      tags: ["season"] }
+        ]},
+        { week: "6주차", dates: "7/7 – 7/13",  theme: "업종별 시리즈", posts: [
+          { title: "업종별 세금 시리즈 1탄 — 음식업편 카드뉴스",                     tags: ["tip"] },
+          { title: "AI로 세금 자료 정리하는 법 — 팀 차별화 콘텐츠 2탄",              tags: ["brand"] },
+          { title: "릴스: 세무사가 직접 알려주는 신고 실수 유형",                    tags: ["trust"] }
+        ]},
+        { week: "7주차", dates: "7/14 – 7/20", theme: "신뢰 + 전환", posts: [
+          { title: "세무 기장 맡기면 달라지는 것들 — 비교 카드뉴스",                 tags: ["trust"] },
+          { title: "신고 마감 D-5 최후 알림 그래픽 + 긴급 상담 유도",               tags: ["season"] }
+        ]},
+        { week: "8주차", dates: "7/21 – 7/27", theme: "마감 후 전환", posts: [
+          { title: "부가세 신고 완료 축하 + 하반기 절세 예고 카드",                  tags: ["brand"] },
+          { title: "팔로워 감사 이벤트 — 세금 Q&A 댓글 이벤트 기획",                tags: ["brand","trust"] }
+        ]}
+      ]
+    }
+  }
+};
+
+var curMonth = "jun";
+var curChannel = "blog";
+
+function buildPost(p) {
+  var tagsHtml = "";
+  for (var i = 0; i < p.tags.length; i++) {
+    var t = p.tags[i];
+    tagsHtml += "<span class=\"tag " + tagMap[t].cls + "\">" + tagMap[t].label + "</span>";
+  }
+  return "<div class=\"post\"><div class=\"post-bullet\"></div><div class=\"post-body\"><div class=\"post-title\">" + p.title + "</div><div class=\"tags\">" + tagsHtml + "</div></div></div>";
+}
+
+function render() {
+  var d = cal[curMonth][curChannel];
+  document.getElementById("month-note").innerHTML = d.note;
+  var html = "";
+  for (var i = 0; i < d.weeks.length; i++) {
+    var w = d.weeks[i];
+    var postsHtml = "";
+    for (var j = 0; j < w.posts.length; j++) {
+      postsHtml += buildPost(w.posts[j]);
+    }
+    html += "<div class=\"week-card\"><div class=\"week-row\"><span class=\"week-num\">" + w.week + "</span><span class=\"week-dates\">" + w.dates + "</span><span class=\"week-theme\">&mdash; " + w.theme + "</span></div><div class=\"posts\">" + postsHtml + "</div></div>";
+  }
+  document.getElementById("calendar-body").innerHTML = html;
+}
+
+function switchMonth(m) {
+  curMonth = m;
+  document.getElementById("tab-jun").className = "m-tab" + (m === "jun" ? " active" : "");
+  document.getElementById("tab-jul").className = "m-tab" + (m === "jul" ? " active" : "");
+  render();
+}
+
+function switchChannel(ch) {
+  curChannel = ch;
+  var blog  = document.getElementById("ch-blog");
+  var insta = document.getElementById("ch-insta");
+  blog.className  = "ch-tab" + (ch === "blog"  ? " active-blog"  : "");
+  insta.className = "ch-tab" + (ch === "insta" ? " active-insta" : "");
+  blog.innerHTML  = "<span class=\"ch-icon\">N</span> 네이버 블로그";
+  insta.innerHTML = "<span class=\"ch-icon\">In</span> 인스타그램";
+  render();
+}
+
+render();
+</script>
+</body>
+</html>
